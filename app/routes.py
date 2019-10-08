@@ -5,6 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
 from datetime import datetime
+from app.bokeh_plot import resources, div, script
 
 
 @app.before_request
@@ -97,3 +98,8 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/bokeh')
+def bokeh():
+    return render_template('bokeh.html', plot_div=div, resources=resources, plot_script=script)
