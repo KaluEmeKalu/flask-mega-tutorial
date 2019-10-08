@@ -21,7 +21,7 @@ data = lambda: [random.choice([i for i in range(100)]) for r in range(10)]
 red = figure(sizing_mode='scale_width', tools=TOOLS, **PLOT_OPTIONS)
 red.scatter(data(), data(), color="red", **SCATTER_OPTIONS)
 
-blue = figure(sizing_mode='fixed', tools=TOOLS, **PLOT_OPTIONS)
+blue = figure(sizing_mode='scale_width', tools=TOOLS, **PLOT_OPTIONS)
 blue.scatter(data(), data(), color="blue", **SCATTER_OPTIONS)
 
 green = figure(sizing_mode='scale_width', tools=TOOLS, **PLOT_OPTIONS)

@@ -1,0 +1,15 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Responsive plots</title>
+        {{ resources|safe }}
+    </head>
+    <body>
+        <h2>Resize the window to see some plots resizing</h2>
+        <h3>Red - pan tool, scale_width</h3>
+        {{ plot_div.red|safe }}
+
+        <!-- Add Script -->
+        {{ plot_script|safe }}
+    </body>
+</html>
