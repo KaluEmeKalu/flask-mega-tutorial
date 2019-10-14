@@ -7,6 +7,10 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 from app import bokeh_plot
 from app import bokeh_nba
+from bokeh.embed import server_document
+from tornado.ioloop import IOLoop
+from app.nba_data.BokehPlot import modify_doc
+from bokeh.server.server import Server
 
 
 @app.before_request
@@ -111,3 +115,25 @@ def bokeh():
 @app.route('/nba')
 def nba_bokeh():
     return render_template('nba_bokeh.html', plot_div=bokeh_nba.div, resources=bokeh_nba.resources, plot_script=bokeh_nba.script)
+
+
+
+def bk_worker():
+    # Can't pass num_procs > 1 in this configuration. If you need to run multiple
+    # processes, see e.g. flask_gunicorn_embed.py
+    print("Here is modify doc: {}".format(modify_doc))
+    try:
+        server = Server({'/bkapp': modify_doc}, io_loop=IOLoop(), allow_websocket_origin=["localhost:8000"])
+        server.start()
+        server.io_loop.start()
+    except Exception as e:
+        print(e)
+
+
+@app.route('/nba2', methods=['GET'])
+def bkapp_page():
+    from threading import Thread
+    Thread(target=bk_worker).start()
+    script = server_document('http://localhost:5006/bkapp')
+    print(script)
+    return render_template("embed.html", script=script, template="Flask")
